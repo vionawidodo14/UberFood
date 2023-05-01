@@ -32,7 +32,7 @@ const Home = () => {
             },
         };
 
-        return fetch(yelpUrl, apiOptions).then((res) => res.json()).then(json => setRestaurantData(json.businesses));
+        return fetch(yelpUrl, apiOptions).then((res) => res.json()).then(json => setRestaurantData(json.businesses.filter((business) => business.transactions.includes(activeTab.toLowerCase()))));
     };
 
     useEffect(() => {
@@ -55,7 +55,7 @@ const Home = () => {
         getRestaurantsFromYelp()
 
 
-    }, [navigation]);
+    }, [navigation, activeTab]);
 
     return (
         <SafeAreaView style={{ backgroundColor: "#eee", flex: 1 }}>

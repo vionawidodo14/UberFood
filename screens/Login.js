@@ -52,6 +52,7 @@ export default function Login({ navigation }) {
             <Text style={{ color: '#f57c00', fontWeight: '600', fontSize: 14 }}> Sign Up</Text>
           </TouchableOpacity>
         </View>
+        <Text style={styles.name}>19160042 Viona Widodo</Text>
       </SafeAreaView>
       <StatusBar barStyle="light-content" />
     </View>
@@ -68,6 +69,14 @@ const styles = StyleSheet.create({
     color: "orange",
     alignSelf: "center",
     paddingBottom: 24,
+  },
+  name: {
+    fontSize: 15,
+    color: "black",
+    alignSelf: "center",
+    paddingBottom: 35,
+    position: 'absolute',
+    bottom: 0,
   },
   input: {
     backgroundColor: "#F6F7FB",
