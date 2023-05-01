@@ -7,21 +7,25 @@ import { updatePassword } from "firebase/auth";
 import { auth } from '../config/firebase'
 
 const backImage = require("../assets/backImage.jpg");
+const [password, setPassword] = useState("");
 
 const Account = () => {
 
     const { user } = useContext(AuthenticatedUserContext)
 
     const update = async () => {
-        try {
-            await updatePassword(user, '12345678')
-            alert('success')
-
-        } catch (error) {
-            alert('fail')
+        if (password !== "") {
+            updatePassword(user, password)
+                .then(() => console.log("Update success"))
+                .catch((err) => Alert.alert("Update failed", err.message));
         }
 
-    }
+
+
+    };
+
+
+
     const logout = () => {
         Alert.alert(
             "Logout",
@@ -52,6 +56,7 @@ const Account = () => {
         );
     };
 
+
     return (
 
         <View style={styles.container}>
@@ -70,8 +75,16 @@ const Account = () => {
                 <TextInput style={styles.input} />
 
                 <Text>Password</Text>
-                <TextInput style={styles.input} secureTextEntry={true} />
-
+                <TextInput
+                    style={styles.input}
+                    placeholder="Enter password"
+                    autoCapitalize="none"
+                    autoCorrect={false}
+                    secureTextEntry={true}
+                    textContentType="password"
+                    value={password}
+                    onChangeText={(text) => setPassword(text)}
+                />
                 <Button title='Update' onPress={update} />
                 <TouchableOpacity
                     style={styles.buttonStyle}
