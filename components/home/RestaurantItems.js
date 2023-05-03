@@ -45,6 +45,7 @@ export default function RestaurantItem({ restaurantData, navigation }) {
                     reviews: restaurantData.review_count,
                     rating: restaurantData.rating,
                     categories: restaurantData.categories,
+                    type: restaurantData.transactions.includes('pickup') ? 'pickup' : 'delivery'
                 })
             }
         >

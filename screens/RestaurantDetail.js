@@ -107,7 +107,7 @@ export default function RestaurantDetail({ route, navigation }) {
       totalPrice: getTotal().totalPrice,
       totalQuantity: getTotal().totalQuantity,
       address: 'address',
-      type: 'delivery',
+      type: route.params.type,
       items: cart,
       restaurantName: route.params.name,
       user: user.email
