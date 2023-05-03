@@ -110,7 +110,9 @@ export default function RestaurantDetail({ route, navigation }) {
       type: route.params.type,
       items: cart,
       restaurantName: route.params.name,
-      user: user.email
+      restaurantImage: route.params.image,
+      user: user.email,
+
     }
     const rawResponse = await fetch('https://uber-food-clone-a209f-default-rtdb.firebaseio.com/transaction.json', {
       method: 'POST',

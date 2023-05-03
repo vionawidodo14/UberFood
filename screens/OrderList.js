@@ -1,6 +1,6 @@
 import React, { useContext, useEffect } from 'react'
 import { useState } from 'react'
-import { View, Text, ScrollView } from 'react-native'
+import { View, Text, ScrollView, Image } from 'react-native'
 import { AuthenticatedUserContext } from '../App'
 
 const OrderList = () => {
@@ -30,6 +30,7 @@ const OrderList = () => {
             margin: 5,
             alignItems: 'center'
           }}>
+            <Image source={{ uri: transactions[id].restaurantImage }} style={{ height: 80, width: 80 }} />
             <View>
               <View><Text style={{ fontSize: 16, fontWeight: 'bold' }}>{transactions[id].restaurantName}</Text></View>
 
@@ -42,7 +43,7 @@ const OrderList = () => {
 
             <Text style={{ fontSize: 18, fontWeight: 'bold' }}>${transactions[id].totalPrice}</Text>
           </View>
-        ))
+        )).reverse()
 
       }
 

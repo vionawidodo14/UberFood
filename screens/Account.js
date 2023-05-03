@@ -3,7 +3,7 @@ import { useContext } from 'react'
 import { View, Text, Button, TouchableOpacity, Alert, ScrollView, Image, SafeAreaView } from 'react-native'
 import { StyleSheet, TextInput } from 'react-native'
 import { AuthenticatedUserContext } from '../App'
-import { updatePassword } from "firebase/auth";
+import { updatePassword, signOut } from "firebase/auth";
 import { auth } from '../config/firebase'
 
 const backImage = require("../assets/backImage.jpg");
@@ -17,7 +17,7 @@ const Account = () => {
   const update = async () => {
     if (password !== "") {
       updatePassword(user, password)
-        .then(() => console.log("Update success"))
+        .then(() => alert("Update success"))
         .catch((err) => Alert.alert("Update failed", err.message));
     }
 
@@ -41,15 +41,8 @@ const Account = () => {
         {
           text: "Confirm",
           onPress: () => {
-            auth()
-              .signOut()
-              .then(() => navigation.replace("Auth"))
-              .catch((error) => {
-                console.log(error);
-                if (error.code === "auth/no-current-user")
-                  navigation.replace("Auth");
-                else alert(error);
-              });
+            signOut(auth)
+              .then(() => alert('Logout success'))
           },
         },
       ],
