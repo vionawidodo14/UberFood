@@ -5,6 +5,7 @@ import About from "../components/restaurantDetail/About";
 import MenuItems from "../components/restaurantDetail/MenuItems";
 import ViewCart from "../components/restaurantDetail/ViewCart";
 import { AuthenticatedUserContext } from "../App";
+import dayjs from 'dayjs'
 
 const foods = [
   {
@@ -103,6 +104,8 @@ export default function RestaurantDetail({ route, navigation }) {
   }
 
   const createOrder = async () => {
+    // return console.log(dayjs().format('YYYY-MM-DD'));
+
     const orderData = {
       totalPrice: getTotal().totalPrice,
       totalQuantity: getTotal().totalQuantity,
@@ -112,7 +115,7 @@ export default function RestaurantDetail({ route, navigation }) {
       restaurantName: route.params.name,
       restaurantImage: route.params.image,
       user: user.email,
-
+      date: dayjs().format('YYYY-MM-DD')
     }
     const rawResponse = await fetch('https://uber-food-clone-a209f-default-rtdb.firebaseio.com/transaction.json', {
       method: 'POST',

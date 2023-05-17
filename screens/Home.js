@@ -22,6 +22,7 @@ const Home = () => {
     const [activeTab, setActiveTab] = useState("Delivery");
     const [city, setCity] = useState("San Francisco");
     const [restaurantData, setRestaurantData] = useState([]);
+    const [filteredData, setFilteredData] = useState([]);
 
     const getRestaurantsFromYelp = () => {
         const yelpUrl = 'https://api.yelp.com/v3/businesses/search?location=San Diego'
@@ -32,7 +33,13 @@ const Home = () => {
             },
         };
 
-        return fetch(yelpUrl, apiOptions).then((res) => res.json()).then(json => setRestaurantData(json.businesses.filter((business) => business.transactions.includes(activeTab.toLowerCase()))));
+        return fetch(yelpUrl, apiOptions).then((res) => res.json()).
+            then(json => {
+                const datalist = json.businesses.filter((business) => business.transactions.includes(activeTab.toLowerCase()))
+
+                setRestaurantData(datalist)
+                setFilteredData(datalist)
+            });
     };
 
     useEffect(() => {
@@ -57,16 +64,25 @@ const Home = () => {
 
     }, [navigation, activeTab]);
 
+    const handleSearch = (text) => {
+        const filtered = restaurantData.filter(item => item.name.toLowerCase().includes(text))
+        setFilteredData(filtered)
+    }
+
+    const handleCategorySelected = (text) => {
+        const filtered = restaurantData.filter(item => item.categories.some(i => i.alias.includes(text.toLowerCase())))
+        setFilteredData(filtered)
+    }
     return (
         <SafeAreaView style={{ backgroundColor: "#eee", flex: 1 }}>
             <View style={styles.container}>
                 <HeaderTabs activeTab={activeTab} setActiveTab={setActiveTab} />
-                <SearchBar cityHandler={setCity} />
+                <SearchBar cityHandler={setCity} onPressSearch={handleSearch} />
             </View>
             <ScrollView showsVerticalScrollIndicator={false}>
-                <Categories />
+                <Categories selectCategory={handleCategorySelected} />
                 {
-                    restaurantData.map(item => <RestaurantItem navigation={navigation} restaurantData={item} />)
+                    filteredData.map(item => <RestaurantItem navigation={navigation} restaurantData={item} />)
                 }
 
 

@@ -1,31 +1,31 @@
 import React from "react";
-import { View, Text, Image, ScrollView } from "react-native";
+import { View, Text, Image, ScrollView, TouchableOpacity } from "react-native";
 
 const items = [
   {
     image: require("../../assets/pickup.png"),
-    text: "Pick-up",
+    text: "Noodles",
   },
   {
     image: require("../../assets/fastfood.png"),
-    text: "Burger",
+    text: "Bars",
   },
   {
     image: require("../../assets/snack.png"),
-    text: "Snacks",
+    text: "Salad",
   },
   {
     image: require("../../assets/drink.png"),
-    text: "Drinks",
+    text: "Italian",
   },
   {
     image: require("../../assets/dessert.png"),
-    text: "Dessert",
+    text: "Ramen",
   },
 
 ];
 
-export default function Categories() {
+export default function Categories({ selectCategory }) {
   return (
     <View
       style={{
@@ -37,17 +37,19 @@ export default function Categories() {
     >
       <ScrollView horizontal showsHorizontalScrollIndicator={false}>
         {items.map((item, index) => (
-          <View key={index} style={{ alignItems: "center", marginRight: 30 }}>
-            <Image
-              source={item.image}
-              style={{
-                width: 50,
-                height: 40,
-                resizeMode: "contain",
-              }}
-            />
-            <Text style={{ fontSize: 13, fontWeight: "900" }}>{item.text}</Text>
-          </View>
+          <TouchableOpacity onPress={() => selectCategory(item.text)}>
+            <View key={index} style={{ alignItems: "center", marginRight: 30 }}>
+              <Image
+                source={item.image}
+                style={{
+                  width: 50,
+                  height: 40,
+                  resizeMode: "contain",
+                }}
+              />
+              <Text style={{ fontSize: 13, fontWeight: "900" }}>{item.text}</Text>
+            </View>
+          </TouchableOpacity>
         ))}
       </ScrollView>
     </View>
