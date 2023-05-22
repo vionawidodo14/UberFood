@@ -3,24 +3,24 @@ import { View, Text, Image, ScrollView, TouchableOpacity } from "react-native";
 
 const items = [
   {
-    image: require("../../assets/pickup.png"),
-    text: "Noodles",
+    image: require("../../assets/steak.png"),
+    text: "Steak",
   },
   {
-    image: require("../../assets/fastfood.png"),
+    image: require("../../assets/bar1.png"),
     text: "Bars",
   },
   {
-    image: require("../../assets/snack.png"),
-    text: "Salad",
+    image: require("../../assets/seafood1.png"),
+    text: "Seafood",
   },
   {
-    image: require("../../assets/drink.png"),
+    image: require("../../assets/italian1.png"),
     text: "Italian",
   },
   {
-    image: require("../../assets/dessert.png"),
-    text: "Ramen",
+    image: require("../../assets/sushi.png"),
+    text: "Sushi",
   },
 
 ];
