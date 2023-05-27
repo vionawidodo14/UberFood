@@ -7,45 +7,6 @@ import ViewCart from "../components/restaurantDetail/ViewCart";
 import { AuthenticatedUserContext } from "../App";
 import dayjs from 'dayjs'
 
-const foods = [
-  {
-    title: "Lasagna",
-    description: "With butter lettuce, tomato and sauce bechamel",
-    price: 13,
-    image:
-      "https://www.modernhoney.com/wp-content/uploads/2019/08/Classic-Lasagna-14-scaled.jpg",
-  },
-  {
-    title: "Tandoori Chicken",
-    description:
-      "Amazing Indian dish with tenderloin chicken off the sizzles 🔥",
-    price: 19,
-    image: "https://i.ytimg.com/vi/BKxGodX9NGg/maxresdefault.jpg",
-  },
-  {
-    title: "Chilaquiles",
-    description:
-      "Chilaquiles with cheese and sauce. A delicious mexican dish 🇲🇽",
-    price: 14,
-    image:
-      "https://i2.wp.com/chilipeppermadness.com/wp-content/uploads/2020/11/Chilaquales-Recipe-Chilaquiles-Rojos-1.jpg",
-  },
-  {
-    title: "Chicken Caesar Salad",
-    description:
-      "One can never go wrong with a chicken caesar salad. Healthy option with greens and proteins!",
-    price: 21,
-    image:
-      "https://images.themodernproper.com/billowy-turkey/production/posts/2019/Easy-italian-salad-recipe-10.jpg?w=1200&h=1200&q=82&fm=jpg&fit=crop&fp-x=0.5&fp-y=0.5&dm=1614096227&s=c0f63a30cef3334d97f9ecad14be51da",
-  },
-  {
-    title: "Lasagna",
-    description: "With butter lettuce, tomato and sauce bechamel",
-    price: 13,
-    image:
-      "https://thestayathomechef.com/wp-content/uploads/2017/08/Most-Amazing-Lasagna-2-e1574792735811.jpg",
-  },
-];
 
 export default function RestaurantDetail({ route, navigation }) {
   const [cart, setCart] = useState([])
@@ -70,7 +31,8 @@ export default function RestaurantDetail({ route, navigation }) {
           ...newData, {
             title: food.title,
             quantity: cart[foodIndex].quantity - 1,
-            price: food.price
+            price: food.price,
+            basePrice: food.basePrice,
           }]
 
       }
@@ -84,7 +46,8 @@ export default function RestaurantDetail({ route, navigation }) {
       const newItem = {
         title: food.title,
         quantity: cart[foodIndex].quantity + 1,
-        price: food.price
+        price: food.price,
+        basePrice: food.basePrice,
       }
       setCart([
         ...removed,
@@ -94,7 +57,8 @@ export default function RestaurantDetail({ route, navigation }) {
       const newItem = {
         title: food.title,
         quantity: 1,
-        price: food.price
+        price: food.price,
+        basePrice: food.basePrice,
       }
       setCart([
         ...cart,
@@ -109,6 +73,7 @@ export default function RestaurantDetail({ route, navigation }) {
     const orderData = {
       totalPrice: getTotal().totalPrice,
       totalQuantity: getTotal().totalQuantity,
+      totalExpenses: getTotal().totalExpenses,
       address: 'address',
       type: route.params.type,
       items: cart,
@@ -136,15 +101,17 @@ export default function RestaurantDetail({ route, navigation }) {
 
   const getTotal = () => {
     const totalPrice = cart.reduce((curr, next) => curr + (next.price * next.quantity), 0)
+    const totalExpenses = cart.reduce((curr, next) => curr + parseInt(next.basePrice), 0)
     const totalQuantity = cart.reduce((curr, next) => curr + next.quantity, 0)
     return {
       totalPrice,
+      totalExpenses,
       totalQuantity
     }
   }
   return (
     <View style={{ flex: 1 }}>
-      <MenuItems route={route} foods={foods} getFoodQty={getFoodQty} decreaseItem={decreaseItem} increaseItem={increaseItem} />
+      <MenuItems route={route} getFoodQty={getFoodQty} decreaseItem={decreaseItem} increaseItem={increaseItem} />
       <View style={{
         backgroundColor: "#eee",
       }}>

@@ -33,6 +33,7 @@ export const localRestaurants = [
 ];
 
 export default function RestaurantItem({ restaurantData, navigation }) {
+    console.log(restaurantData);
     return (
         <TouchableOpacity
             activeOpacity={1}
@@ -40,11 +41,14 @@ export default function RestaurantItem({ restaurantData, navigation }) {
             onPress={() =>
                 navigation.navigate("RestaurantDetail", {
                     name: restaurantData.name,
+                    address: restaurantData.address,
                     image: restaurantData.image_url,
                     price: restaurantData.price,
                     reviews: restaurantData.review_count,
                     rating: restaurantData.rating,
+                    basePrice: restaurantData.basePrice,
                     categories: restaurantData.categories,
+                    restaurantID: restaurantData.id,
                     type: restaurantData.transactions.includes('pickup') ? 'pickup' : 'delivery'
                 })
             }

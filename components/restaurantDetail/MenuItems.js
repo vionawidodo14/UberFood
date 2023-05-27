@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { View, Text, StyleSheet, Image, ScrollView, TouchableOpacity, Button } from "react-native";
 import About from "./About";
 // import BouncyCheckbox from "react-native-bouncy-checkbox";
@@ -20,17 +20,24 @@ const styles = StyleSheet.create({
 
 export default function MenuItems({
   route,
-  foods,
   marginLeft,
   decreaseItem,
   increaseItem,
   getFoodQty
 }) {
+  const [foods, setFoods] = useState([])
 
+  useEffect(() => {
+    const url = 'https://uber-food-clone-a209f-default-rtdb.firebaseio.com/menu.json'
 
-  // const cartItems = useSelector(
-  //   (state) => state.cartReducer.selectedItems.items
-  // );
+    return fetch(url).then((res) => res.json()).
+      then(json => {
+        var data = Object.keys(json).map((id) => json[id])
+        data = data.filter((item) => item.restaurantID == route.params.restaurantID)
+
+        setFoods(data)
+      });
+  }, [])
 
   return (
     <ScrollView showsVerticalScrollIndicator={false}>
@@ -71,7 +78,7 @@ const FoodInfo = (props) => {
 const FoodImage = ({ marginLeft, ...props }) => (
   <View>
     <Image
-      source={{ uri: props.food.image }}
+      source={{ uri: props.food.imageUrl }}
       style={{
         width: 100,
         height: 100,

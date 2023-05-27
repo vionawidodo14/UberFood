@@ -25,17 +25,12 @@ const Home = () => {
     const [filteredData, setFilteredData] = useState([]);
 
     const getRestaurantsFromYelp = () => {
-        const yelpUrl = 'https://api.yelp.com/v3/businesses/search?location=San Diego'
+        const yelpUrl = 'https://uber-food-clone-a209f-default-rtdb.firebaseio.com/restaurant.json'
 
-        const apiOptions = {
-            headers: {
-                Authorization: `Bearer ${YELP_API_KEY}`,
-            },
-        };
-
-        return fetch(yelpUrl, apiOptions).then((res) => res.json()).
+        return fetch(yelpUrl).then((res) => res.json()).
             then(json => {
-                const datalist = json.businesses.filter((business) => business.transactions.includes(activeTab.toLowerCase()))
+                const data = Object.keys(json).map((id) => json[id])
+                const datalist = data.filter((item) => item.transactions.includes(activeTab.toLowerCase()))
 
                 setRestaurantData(datalist)
                 setFilteredData(datalist)
