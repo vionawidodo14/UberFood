@@ -1,9 +1,9 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useContext } from 'react'
 import { View, Text, Button, TouchableOpacity, Alert, ScrollView, Image, SafeAreaView } from 'react-native'
 import { StyleSheet, TextInput } from 'react-native'
 import { AuthenticatedUserContext } from '../App'
-import { updatePassword, signOut } from "firebase/auth";
+import { updatePassword, signOut, updateProfile, updatePhoneNumber } from "firebase/auth";
 import { auth } from '../config/firebase'
 
 const backImage = require("../assets/backImage.jpg");
@@ -13,15 +13,30 @@ const Account = () => {
 
   const { user } = useContext(AuthenticatedUserContext)
   const [password, setPassword] = useState("");
+  const [name, setName] = useState("");
+  const [phone, setPhone] = useState("");
+
+  useEffect(() => {
+    if (user) {
+      console.log(user);
+      setName(user.displayName)
+      setPhone(user.photoURL)
+    }
+  }, [user])
+
 
   const update = async () => {
-    if (password !== "") {
-      updatePassword(user, password)
-        .then(() => alert("Update success"))
-        .catch((err) => Alert.alert("Update failed", err.message));
+    try {
+      if (password !== "") {
+        await updatePassword(user, password)
+      }
+
+      await updateProfile(user, { displayName: name, photoURL: phone })
+      Alert.alert('Info', 'Update success')
+    } catch (error) {
+      alert("Update success")
+      Alert.alert("Update failed", err.message)
     }
-
-
 
   };
 
@@ -59,15 +74,13 @@ const Account = () => {
         <View style={styles.whiteSheet} />
         <Text style={[styles.box1, styles.title]}>My Account</Text>
         <SafeAreaView style={styles.form}>
-
-
           <Text>Email</Text>
           <TextInput style={styles.input} value={user.email} />
 
           <Text>Name</Text>
-          <TextInput style={styles.input} />
+          <TextInput style={styles.input} value={name} onChangeText={t => setName(t)} />
           <Text>Phone</Text>
-          <TextInput style={styles.input} />
+          <TextInput style={styles.input} value={phone} onChangeText={t => setPhone(t)} />
 
           <Text>Password</Text>
           <TextInput
@@ -107,7 +120,7 @@ const styles = StyleSheet.create({
     borderWidth: 1,
   },
   buttonStyle: {
-    minWidth: 300,
+    minWidth: '100%',
     backgroundColor: "#f57c00",
     borderWidth: 0,
     color: "#FFFFFF",
@@ -115,8 +128,6 @@ const styles = StyleSheet.create({
     height: 40,
     alignItems: "center",
     borderRadius: 30,
-    marginLeft: 35,
-    marginRight: 35,
     marginTop: 20,
     marginBottom: 25,
   },

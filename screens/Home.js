@@ -65,7 +65,7 @@ const Home = () => {
     }
 
     const handleCategorySelected = (text) => {
-        const filtered = restaurantData.filter(item => item.categories.some(i => i.alias.includes(text.toLowerCase())))
+        const filtered = restaurantData.filter(item => item.category == text.toLowerCase())
         setFilteredData(filtered)
     }
     return (
